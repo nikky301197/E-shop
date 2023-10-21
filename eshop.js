@@ -594,9 +594,18 @@ function createHeader() {
   var headerLogo = document.createElement("div");
   headerLogo.setAttribute("class", "col-md-3  ");
   headerRow.appendChild(headerLogo);
+
   var logoH1 = document.createElement("h1");
   logoH1.innerHTML = "<span class='text-warning'>E</span>-shop";
   logoH1.setAttribute("class", "text-white");
+  logoH1.setAttribute("style", "cursor : pointer")
+  logoH1.addEventListener("click", function()
+  {
+  var cartContainer = document.querySelector("#cart-container");
+  cartContainer.innerHTML = "";
+  createCart(JSON.parse(localStorage.getItem("product_list")));
+  })
+
   headerLogo.appendChild(logoH1);
   // header logo code ends here
 
@@ -687,7 +696,7 @@ function createHeader() {
 function createCart(data) {
   var mainDiv = document.querySelector("#main");
   var divContainer = document.createElement("div");
-  divContainer.setAttribute("class", "container  mt-3 mb-5   ");
+  divContainer.setAttribute("class", "container   mb-5   ");
   divContainer.setAttribute("id", "cart-container");
   var rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "row   ");
@@ -729,6 +738,10 @@ function createCart(data) {
     addToCartElement.setAttribute("class", "btn btn-warning mt-1");
     addToCartElement.setAttribute("style", "width:90%;color:white;");
     addToCartElement.innerText = "Add To Cart";
+    addToCartElement.addEventListener("click", function()
+    {
+      saveProductInCart(product);     
+    })
     cart.appendChild(addToCartElement);
 
     cartContainer.appendChild(cart);
@@ -746,15 +759,25 @@ function viewProductDescriptionComponent(product) {
 
   let colDiv1 = document.createElement("div");
   colDiv1.setAttribute("class", "col-md-6  ");
-  let imgElement = document.createElement("img");
-  imgElement.src = product.thumbnail;
-  imgElement.setAttribute("style", "height:400px; width:100%;");
-  colDiv1.appendChild(imgElement);
+  let mainImgElement = document.createElement("img");
+  mainImgElement.src = product.thumbnail;
+  mainImgElement.setAttribute("style", "height:400px; width:100%;  ");
+  colDiv1.appendChild(mainImgElement);
+
   let imageArray = document.createElement("div");
-  for (let image of product.images) {
+  // for (let image of product.images) 
+  for (var  i = 0 ; i < 4 ; i ++)
+  {
     let imgElement = document.createElement("img");
-    imgElement.src = image;
-    imgElement.setAttribute("style", "height:100px; width:18%;");
+    imgElement.src =   product.images[i];
+    imgElement.setAttribute("style", "height:100px; width:19%; margin-top:10px ; margin-left : 5px ; cursor : pointer");
+    
+    imgElement.addEventListener("click", function()
+    {
+      var temp = mainImgElement.src ;
+      mainImgElement.src = imgElement.src;
+      imgElement.src = temp ;
+    })
     imageArray.appendChild(imgElement);
   }
   colDiv1.appendChild(imageArray);
@@ -763,44 +786,35 @@ function viewProductDescriptionComponent(product) {
   let colDiv2 = document.createElement("div");
   colDiv2.setAttribute(
     "class",
-    "col-md-6   d-flex flex-column justify-content-start align-items-md-start"
+    "col-md-4 offset-md-1  d-flex flex-column justify-content-start align-items-md-start"
   );
 
-  let title = document.createElement("h4");
-  title.setAttribute("class", "mt-5");
+  let title = document.createElement("h1");
+  title.setAttribute("class", "mt-2");
   title.innerHTML = product.title;
   colDiv2.appendChild(title);
 
-  let description = document.createElement("h6");
+  let description = document.createElement("p");
   description.innerHTML = "( " + product.description + " )";
-  description.setAttribute("class", "mt-4");
+  description.setAttribute("class", "");
   colDiv2.appendChild(description);
 
-  let price = document.createElement("h6");
-  price.setAttribute("class", "text-success mt-4");
-  price.innerHTML = "MRP <br> Rs. " + product.price;
+  let price = document.createElement("p");
+  price.setAttribute("class", "text-warning ");
+  price.innerHTML = "MRP  Rs. " + product.price;
   colDiv2.appendChild(price);
 
-  let discountPercentage = document.createElement("h7");
-  discountPercentage.setAttribute("class", " mt-4");
-  discountPercentage.innerHTML =
-    "Discount Percentage : " + product.discountPercentage;
-  colDiv2.appendChild(discountPercentage);
 
-  let rating = document.createElement("h7");
-  rating.setAttribute("class", "text-primary mt-4");
-  rating.innerHTML = "Rating : " + product.rating;
-  colDiv2.appendChild(rating);
+  let addToCart = document.createElement("button");
+   addToCart.setAttribute("class","btn btn-warning");
+   addToCart.setAttribute("style","width:90% ; font-size :17px");
+   addToCart.innerText = "Add To Cart";
+   addToCart.addEventListener("click", function()
+   {
+    saveProductInCart(product)
+   });
 
-  let brand = document.createElement("h7");
-  brand.setAttribute("class", "mt-4");
-  brand.innerHTML = "Brand : " + product.brand;
-  colDiv2.appendChild(brand);
-
-  let category = document.createElement("h7");
-  category.setAttribute("class", "mt-4");
-  category.innerHTML = "Category : " + product.category;
-  colDiv2.appendChild(category);
+   colDiv2.appendChild(addToCart);
 
   rowDiv.appendChild(colDiv2);
 
@@ -810,7 +824,7 @@ function viewProductDescriptionComponent(product) {
 function generateForm(buttontext) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
-
+   
   var rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "row  d-flex justify-content-center ");
   var colDiv = document.createElement("div");
@@ -819,6 +833,11 @@ function generateForm(buttontext) {
     "style",
     "height : fit-content ; margin-top : 30px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"
   );
+
+  var heading = document.createElement("h2");
+  heading.innerText = buttontext;
+  heading.setAttribute("class",  "text-center ");
+  colDiv.appendChild(heading);
 
   var emailInput = document.createElement("input");
   emailInput.setAttribute("class", "form-control mt-5");
@@ -836,7 +855,7 @@ function generateForm(buttontext) {
 
   var button = document.createElement("button");
   button.innerText = buttontext;
-  button.setAttribute("class", "btn btn-primary  text-white mt-5 w-100");
+  button.setAttribute("class", "btn btn-primary  text-white mt-5 w-100 ");
   button.addEventListener("click", async function () {
     var email = document.querySelector("#email").value;
     var password = document.querySelector("#password").value;
@@ -862,6 +881,7 @@ function generateForm(buttontext) {
   cartContainer.appendChild(rowDiv);
 }
 
+
 function saveUser(email, password) {
   var userlist = localStorage.getItem("user-list");
   userlist = JSON.parse(userlist);
@@ -886,8 +906,69 @@ function signInUser(email, password) {
     return user.email == email && user.password == password;
   });
   if (user) {
-    sessionStorage.setItem("isLoggedIn", true);
+    sessionStorage.setItem("isLoggedIn", email);
     return true;
   }
   return false;
+}
+
+
+function saveProductInCart(product)
+{
+var userId = isLoggedIn();
+console.log(userId);
+var cart = { user : userId , productList : [] };
+
+if (userId)
+{
+  console.log("if block");
+  let cartList = localStorage.getItem("cart-list");
+  cartList = JSON.parse(cartList);
+  console.log(cartList);
+   let  cartEachUser =  cartList.find( (data) => {
+    return data.user == userId 
+  })
+  console.log("carteach user "+cartEachUser);
+  if (cartEachUser)
+  {
+    localStorage.setItem("cart-list", JSON.stringify(cartList) )
+    cartEachUser =  cartList.find( (data) => {
+    return data.user == userId 
+  })
+  cartEachUser.productList.push(product);
+  localStorage.setItem("cart-list", JSON.stringify(cartList) )
+    alert("cart present for user ");
+  }
+  else{
+    cartList.push(cart);
+    localStorage.setItem("cart-list", JSON.stringify(cartList) )
+      cartEachUser =  cartList.find( (data) => {
+      return data.user == userId 
+    })
+    cartEachUser.productList.push(product);
+    localStorage.setItem("cart-list", JSON.stringify(cartList) )
+  alert("no cart present ");
+  }
+  
+  // console.log(cartEachUser);
+ 
+
+  // cartEachUser.productList.push(product);
+  // cartList.push(cart);
+  // localStorage.setItem("cart-list", JSON.stringify(cartList) )
+  // alert("product is added into the cart successfully");
+  
+}
+else{
+  var cartContainer = document.querySelector("#cart-container");
+  cartContainer.innerHTML = "";
+  generateForm("Sign In");
+
+}
+
+}
+
+function isLoggedIn()
+{
+  return sessionStorage.getItem("isLoggedIn");
 }
