@@ -592,19 +592,18 @@ function createHeader() {
   headerRow.setAttribute("class", "bg-dark row ");
   //  header logo starts from here
   var headerLogo = document.createElement("div");
-  headerLogo.setAttribute("class", "col-md-3  ");
+  headerLogo.setAttribute("class", "col-md-3 col-12");
   headerRow.appendChild(headerLogo);
 
   var logoH1 = document.createElement("h1");
   logoH1.innerHTML = "<span class='text-warning'>E</span>-shop";
   logoH1.setAttribute("class", "text-white");
-  logoH1.setAttribute("style", "cursor : pointer")
-  logoH1.addEventListener("click", function()
-  {
-  var cartContainer = document.querySelector("#cart-container");
-  cartContainer.innerHTML = "";
-  createCart(JSON.parse(localStorage.getItem("product_list")));
-  })
+  logoH1.setAttribute("style", "cursor : pointer");
+  logoH1.addEventListener("click", function () {
+    document.querySelector("#main").innerHTML = "";
+    createHeader();
+    createCart(JSON.parse(localStorage.getItem("product_list")));
+  });
 
   headerLogo.appendChild(logoH1);
   // header logo code ends here
@@ -613,7 +612,7 @@ function createHeader() {
   var headerSearchBar = document.createElement("div");
   headerSearchBar.setAttribute(
     "class",
-    "col-md-6   d-flex justify-content-center align-items-center "
+    "col-md-6 col-12   d-flex justify-content-center align-items-center "
   );
   var inputBar = document.createElement("input");
   inputBar.setAttribute("type", "text");
@@ -628,7 +627,7 @@ function createHeader() {
   var headerOption = document.createElement("div");
   headerOption.setAttribute(
     "class",
-    "col-md-3    d-flex justify-content-around align-items-center  "
+    "col-md-3 col-12   d-flex justify-content-around align-items-center  "
   );
   if (!sessionStorage.getItem("isLoggedIn")) {
     var signUp = document.createElement("span");
@@ -655,8 +654,7 @@ function createHeader() {
 
     headerOption.appendChild(signUp);
     headerOption.appendChild(signIn);
-  } 
-  else {
+  } else {
     var viewCart = document.createElement("span");
     viewCart.innerHTML = " View Cart";
     viewCart.setAttribute("class", "bg-warning , text-white p-2 ");
@@ -664,6 +662,9 @@ function createHeader() {
       "style",
       "font-weight: bold ; border-radius : 3px; cursor:pointer "
     );
+    viewCart.addEventListener("click", function () {
+      viewCartComponent();
+    });
 
     var signOut = document.createElement("span");
     signOut.innerText = "Sign Out";
@@ -673,17 +674,15 @@ function createHeader() {
       "font-weight: bold ; border-radius : 3px ; cursor:pointer "
     );
 
-    signOut.addEventListener("click",function(){
+    signOut.addEventListener("click", function () {
       sessionStorage.removeItem("isLoggedIn");
       document.querySelector("#main").innerHTML = "";
       createHeader();
       createCart(JSON.parse(localStorage.getItem("product_list")));
-   });
-    
+    });
+
     headerOption.appendChild(viewCart);
     headerOption.appendChild(signOut);
-    
-    
   }
   headerRow.appendChild(headerOption);
 
@@ -738,10 +737,9 @@ function createCart(data) {
     addToCartElement.setAttribute("class", "btn btn-warning mt-1");
     addToCartElement.setAttribute("style", "width:90%;color:white;");
     addToCartElement.innerText = "Add To Cart";
-    addToCartElement.addEventListener("click", function()
-    {
-      saveProductInCart(product);     
-    })
+    addToCartElement.addEventListener("click", function () {
+      saveProductInCart(product);
+    });
     cart.appendChild(addToCartElement);
 
     cartContainer.appendChild(cart);
@@ -758,26 +756,27 @@ function viewProductDescriptionComponent(product) {
   rowDiv.setAttribute("class", "row  ");
 
   let colDiv1 = document.createElement("div");
-  colDiv1.setAttribute("class", "col-md-6  ");
+  colDiv1.setAttribute("class", "col-md-6   ");
   let mainImgElement = document.createElement("img");
   mainImgElement.src = product.thumbnail;
   mainImgElement.setAttribute("style", "height:400px; width:100%;  ");
   colDiv1.appendChild(mainImgElement);
 
   let imageArray = document.createElement("div");
-  // for (let image of product.images) 
-  for (var  i = 0 ; i < 4 ; i ++)
-  {
+  // for (let image of product.images)
+  for (var i = 0; i < 4; i++) {
     let imgElement = document.createElement("img");
-    imgElement.src =   product.images[i];
-    imgElement.setAttribute("style", "height:100px; width:19%; margin-top:10px ; margin-left : 5px ; cursor : pointer");
-    
-    imgElement.addEventListener("click", function()
-    {
-      var temp = mainImgElement.src ;
+    imgElement.src = product.images[i];
+    imgElement.setAttribute(
+      "style",
+      "height:100px; width:19%; margin-top:10px ; margin-left : 5px ; cursor : pointer"
+    );
+
+    imgElement.addEventListener("click", function () {
+      var temp = mainImgElement.src;
       mainImgElement.src = imgElement.src;
-      imgElement.src = temp ;
-    })
+      imgElement.src = temp;
+    });
     imageArray.appendChild(imgElement);
   }
   colDiv1.appendChild(imageArray);
@@ -786,11 +785,11 @@ function viewProductDescriptionComponent(product) {
   let colDiv2 = document.createElement("div");
   colDiv2.setAttribute(
     "class",
-    "col-md-4 offset-md-1  d-flex flex-column justify-content-start align-items-md-start"
+    "col-md-4 offset-md-1  d-flex flex-column justify-content-start align-items-md-start mt-2"
   );
 
   let title = document.createElement("h1");
-  title.setAttribute("class", "mt-2");
+  title.setAttribute("class", "mt-3");
   title.innerHTML = product.title;
   colDiv2.appendChild(title);
 
@@ -804,17 +803,15 @@ function viewProductDescriptionComponent(product) {
   price.innerHTML = "MRP  Rs. " + product.price;
   colDiv2.appendChild(price);
 
-
   let addToCart = document.createElement("button");
-   addToCart.setAttribute("class","btn btn-warning");
-   addToCart.setAttribute("style","width:90% ; font-size :17px");
-   addToCart.innerText = "Add To Cart";
-   addToCart.addEventListener("click", function()
-   {
-    saveProductInCart(product)
-   });
+  addToCart.setAttribute("class", "btn btn-warning");
+  addToCart.setAttribute("style", "width:90% ; font-size :17px");
+  addToCart.innerText = "Add To Cart";
+  addToCart.addEventListener("click", function () {
+    saveProductInCart(product);
+  });
 
-   colDiv2.appendChild(addToCart);
+  colDiv2.appendChild(addToCart);
 
   rowDiv.appendChild(colDiv2);
 
@@ -824,7 +821,7 @@ function viewProductDescriptionComponent(product) {
 function generateForm(buttontext) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
-   
+
   var rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "row  d-flex justify-content-center ");
   var colDiv = document.createElement("div");
@@ -836,7 +833,7 @@ function generateForm(buttontext) {
 
   var heading = document.createElement("h2");
   heading.innerText = buttontext;
-  heading.setAttribute("class",  "text-center ");
+  heading.setAttribute("class", "text-center ");
   colDiv.appendChild(heading);
 
   var emailInput = document.createElement("input");
@@ -881,7 +878,6 @@ function generateForm(buttontext) {
   cartContainer.appendChild(rowDiv);
 }
 
-
 function saveUser(email, password) {
   var userlist = localStorage.getItem("user-list");
   userlist = JSON.parse(userlist);
@@ -912,63 +908,321 @@ function signInUser(email, password) {
   return false;
 }
 
+function saveProductInCart(product) {
+  var userId = isLoggedIn();
 
-function saveProductInCart(product)
-{
-var userId = isLoggedIn();
-console.log(userId);
-var cart = { user : userId , productList : [] };
+  var cart = { user: userId, productList: [] };
 
-if (userId)
-{
-  console.log("if block");
-  let cartList = localStorage.getItem("cart-list");
-  cartList = JSON.parse(cartList);
-  console.log(cartList);
-   let  cartEachUser =  cartList.find( (data) => {
-    return data.user == userId 
-  })
-  console.log("carteach user "+cartEachUser);
-  if (cartEachUser)
-  {
-    localStorage.setItem("cart-list", JSON.stringify(cartList) )
-    cartEachUser =  cartList.find( (data) => {
-    return data.user == userId 
-  })
-  cartEachUser.productList.push(product);
-  localStorage.setItem("cart-list", JSON.stringify(cartList) )
-    alert("cart present for user ");
+  if (userId) {
+    let cartList = localStorage.getItem("cart-list");
+    cartList = JSON.parse(cartList);
+
+    let cartEachUser = cartList.find((data) => {
+      return data.user == userId;
+    });
+    cartList;
+
+    if (!!cartEachUser) {
+      //  added only unique product in cart - list
+      // do not add duplicate product
+      cartEachUser = cartList.find((data) => {
+        return data.user == userId;
+      });
+      let flag = true;
+
+      for (var product1 of cartEachUser.productList) {
+        if (product.id == product1.id) {
+          flag = false;
+          alert("product is already added in cart");
+        }
+      }
+
+      if (flag) {
+        product.qty = 1;
+        cartEachUser.productList.push(product);
+        localStorage.setItem("cart-list", JSON.stringify(cartList));
+        alert("product added successfully in cart");
+      }
+    } else {
+      // blank product list in cartlist  for logged in user  for the first time
+
+      cartList.push(cart);
+      localStorage.setItem("cart-list", JSON.stringify(cartList));
+      cartEachUser = cartList.find((data) => {
+        return data.user == userId;
+      });
+      product.qty = 1;
+      cartEachUser.productList.push(product);
+      localStorage.setItem("cart-list", JSON.stringify(cartList));
+      alert("product added successfully in cart");
+    }
+  } else {
+    var cartContainer = document.querySelector("#cart-container");
+    cartContainer.innerHTML = "";
+    generateForm("Sign In");
   }
-  else{
-    cartList.push(cart);
-    localStorage.setItem("cart-list", JSON.stringify(cartList) )
-      cartEachUser =  cartList.find( (data) => {
-      return data.user == userId 
-    })
-    cartEachUser.productList.push(product);
-    localStorage.setItem("cart-list", JSON.stringify(cartList) )
-  alert("no cart present ");
-  }
-  
-  // console.log(cartEachUser);
- 
-
-  // cartEachUser.productList.push(product);
-  // cartList.push(cart);
-  // localStorage.setItem("cart-list", JSON.stringify(cartList) )
-  // alert("product is added into the cart successfully");
-  
 }
-else{
+
+function isLoggedIn() {
+  return sessionStorage.getItem("isLoggedIn");
+}
+
+function viewCartComponent() {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
-  generateForm("Sign In");
 
+  let cartList = localStorage.getItem("cart-list");
+  cartList = JSON.parse(cartList);
+  var userId = isLoggedIn();
+
+  cartSpecificUser = cartList.find((cart) => {
+    return cart.user == userId;
+  });
+
+  let cartDiv = document.createElement("div");
+  cartDiv.setAttribute("class", "row mt-5");
+
+  let tableDiv = document.createElement("div");
+  tableDiv.setAttribute("class", "col-md-5");
+
+  let table = document.createElement("table");
+  table.setAttribute("class", "table");
+  let tr = document.createElement("tr");
+
+  let tableHeading = ["SNo.", "Title", "Price", "Qty"];
+  for (let heading of tableHeading) {
+    let th = document.createElement("th");
+    th.innerText = heading;
+    tr.appendChild(th);
+  }
+
+  table.appendChild(tr);
+  let i = 1;
+  for (let product of cartSpecificUser.productList) {
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    td.innerText = "" + i;
+    tr.appendChild(td);
+    i++;
+    for (let key in product) {
+      if (key == "title") {
+        let td = document.createElement("td");
+        td.innerText = product[key];
+        tr.appendChild(td);
+      } else if (key == "price") {
+        let td = document.createElement("td");
+        td.innerText = "Rs. " + product[key];
+        tr.appendChild(td);
+      } else if (key == "qty") {
+        let td = document.createElement("td");
+        let qtyInput = document.createElement("input");
+        qtyInput.setAttribute("type", "number");
+        qtyInput.setAttribute("style", "width : 50px");
+        qtyInput.setAttribute("value", product[key]);
+        qtyInput.setAttribute("min", "1");
+        qtyInput.addEventListener("change", function () {
+          let index = cartSpecificUser.productList.findIndex((p1) => {
+            return p1.id == product.id;
+          });
+
+          let productItem = cartSpecificUser.productList[index];
+
+          cartSpecificUser.productList.splice(index, 1);
+
+          productItem.qty = qtyInput.value;
+          cartSpecificUser.productList.splice(index, 0, productItem);
+          localStorage.setItem("cart-list", JSON.stringify(cartList));
+          document.querySelector("#totalBillAmount").innerHTML =
+            getBillAmount(cartSpecificUser);
+        });
+
+        td.appendChild(qtyInput);
+        tr.appendChild(td);
+      }
+    }
+    table.appendChild(tr);
+  }
+
+  tableDiv.appendChild(table);
+  cartDiv.appendChild(tableDiv);
+
+  let orderDiv = document.createElement("div");
+  orderDiv.setAttribute(
+    "class",
+    "col-md-4 offset-md-2 d-flex flex-column justify-content-center align-items-center "
+  );
+  orderDiv.setAttribute(
+    "style",
+    "height:250px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"
+  );
+
+  let h3 = document.createElement("h3");
+  h3.innerText = "Order summery";
+
+  let totalItems = document.createElement("span");
+  totalItems.innerHTML = "Total Items : " + cartSpecificUser.productList.length;
+
+  let billAmount = document.createElement("span");
+  billAmount.innerHTML =
+    "Total Bill : <label id='totalBillAmount' class='text-danger'>" +
+    getBillAmount(cartSpecificUser) +
+    "</label>";
+
+  let buttonCheckout = document.createElement("button");
+  buttonCheckout.setAttribute("class", "btn btn-warning");
+  buttonCheckout.innerText = "Checkout";
+  buttonCheckout.setAttribute("style", "width:90%; font-size:17px");
+  buttonCheckout.addEventListener("click", function () {
+    checkoutComponent();
+  });
+  orderDiv.appendChild(h3);
+  orderDiv.appendChild(totalItems);
+  orderDiv.appendChild(billAmount);
+  orderDiv.appendChild(buttonCheckout);
+
+  cartDiv.appendChild(orderDiv);
+  cartContainer.appendChild(cartDiv);
 }
 
+function getBillAmount(cartSpecificUser) {
+  let totalbillAmount = 0;
+  for (var product of cartSpecificUser.productList) {
+    totalbillAmount = totalbillAmount + product.price * product.qty;
+  }
+  return totalbillAmount;
 }
 
-function isLoggedIn()
-{
-  return sessionStorage.getItem("isLoggedIn");
+// on clicking button of checkout this method will be called
+function checkoutComponent() {
+  var cartContainer = document.querySelector("#cart-container");
+  cartContainer.innerHTML = "";
+
+  let rowDiv = document.createElement("div");
+  rowDiv.setAttribute(
+    "class",
+    "row  d-flex align-items-center justify-content-center"
+  );
+
+  let checkoutDiv = document.createElement("div");
+  checkoutDiv.setAttribute("class", "col-md-7  mt-3 mb-3  pt-2 pb-4");
+  checkoutDiv.setAttribute(
+    "style",
+    "height : fit-content ;  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"
+  );
+
+  var heading = document.createElement("h5");
+  heading.innerText = "Enter Address Details";
+  heading.setAttribute("class", "text-center mt-3 ");
+  checkoutDiv.appendChild(heading);
+
+  var nameInput = document.createElement("input");
+  nameInput.setAttribute("class", "form-control mt-5");
+  nameInput.setAttribute("type", "text");
+  nameInput.setAttribute("placeholder", "Enter name");
+  nameInput.setAttribute("id", "name");
+  checkoutDiv.appendChild(nameInput);
+
+  var emailInput = document.createElement("input");
+  emailInput.setAttribute("class", "form-control mt-5");
+  emailInput.setAttribute("type", "email");
+  emailInput.setAttribute("placeholder", "Enter email id");
+  emailInput.setAttribute("id", "email");
+  checkoutDiv.appendChild(emailInput);
+
+  var numberInput = document.createElement("input");
+  numberInput.setAttribute("class", "form-control mt-5");
+  numberInput.setAttribute("type", "text");
+  numberInput.setAttribute("placeholder", "Enter phone number");
+  numberInput.setAttribute("id", "phoneNo");
+  // numberInput.addEventListener( "onkeydown" , function(){
+  //   alert("sds");
+  //   let  status = true ;
+  //   let mobile =  document.querySelector("#phoneNo").value ;
+  //   let mobileError = document.querySelector("#phoneError");
+  //   if (mobile.length == 0 )
+  //   {
+  //     mobileError.innerText = "Please enter mobile number ";
+  //     mobileError.setAttribute("style", "color:red");
+  //     status = false ;
+  //   }
+  //   else if (isNaN(mobile)){
+  //     mobileError.innerText = "Only digit are allowed";
+  //      mobileError.setAttribute("style", "color:red");
+  //      status = false ;
+  //   }
+  //   else if (mobile.length != 10 )
+  //   {
+  //      mobileError.innerText = "Please enter 10 digit number";
+  //      mobileError.setAttribute("style", "color:red");
+  //      status = false ;
+  //   }
+  //   else{
+  //     mobileError.innerText = "";
+  //   }
+
+  // });
+
+  // let phoneError = document.createElement("span");
+  // phoneError.setAttribute("id", "phoneError");
+  // phoneError.innerText="";
+  // checkoutDiv.appendChild(phoneError);
+
+  checkoutDiv.appendChild(numberInput);
+
+  var addressInput = document.createElement("input");
+  addressInput.setAttribute("class", "form-control mt-5 ");
+  addressInput.setAttribute("type", "text");
+  addressInput.setAttribute("placeholder", "Enter address");
+  addressInput.setAttribute("id", "address");
+  checkoutDiv.appendChild(addressInput);
+
+  var button = document.createElement("button");
+  button.innerText = "Place Order";
+  button.setAttribute("class", "btn btn-success  text-white mt-5 w-100");
+  button.setAttribute("style", "font-size :17px");
+  button.addEventListener("click", function () {
+    placeOrderComponent();
+  });
+  checkoutDiv.appendChild(button);
+
+  rowDiv.appendChild(checkoutDiv);
+  cartContainer.appendChild(rowDiv);
+}
+
+// execute when click on place order button
+
+function placeOrderComponent() {
+  var cartContainer = document.querySelector("#cart-container");
+  cartContainer.innerHTML = "";
+
+  let rowDiv = document.createElement("div");
+  rowDiv.setAttribute(
+    "class",
+    "row  d-flex justify-content-center"
+  );
+
+  let orderPlaceDiv = document.createElement("div");
+  orderPlaceDiv.setAttribute("class", "col-md-4  mt-5 mb-5 d-flex flex-column justify-content-center align-items-center ");
+  orderPlaceDiv.setAttribute("style", "height: fit-content");
+
+  let img = document.createElement("img");
+  img.src =
+    "https://pluspng.com/img-png/green-tick-png-hd-green-check-mark-car-pictures-512.png";
+  img.setAttribute("style", "height : 200px ; width : 200px");
+  orderPlaceDiv.appendChild(img);
+  let h3 = document.createElement("h3");
+  h3.innerText = "Congratulations!!";
+  h3.setAttribute("style", "color : #7BCC70" )
+  orderPlaceDiv.appendChild(h3);
+
+  let p = document.createElement("p");
+  p.innerText = "Order placed successfully";
+  p.setAttribute("class", "text-center")
+  p.setAttribute("style","font-size : 17px");
+  orderPlaceDiv.appendChild(p);
+
+ 
+  rowDiv.appendChild(orderPlaceDiv);
+
+  cartContainer.appendChild(rowDiv);
 }
