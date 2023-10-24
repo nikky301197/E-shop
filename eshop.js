@@ -1001,9 +1001,9 @@ function viewCartComponent() {
     let emptyCart = document.createElement("div");
     emptyCart.setAttribute(
       "class",
-      "col-12  d-flex flex-column justify-content-center align-items-center "
+      "col-12   d-flex flex-column justify-content-center align-items-center "
     );
-    emptyCart.setAttribute("style", "height: 250px ; margin-top :80px ");
+    emptyCart.setAttribute("style", "height: 300px ; margin-top :80px ");
 
     let img = document.createElement("img");
     img.src =
@@ -1022,7 +1022,7 @@ function viewCartComponent() {
   else {
     let tableDiv = document.createElement("div");
     tableDiv.setAttribute("class", "col-md-7 mt-3");
-    tableDiv.setAttribute("style", "height:fit-content")
+    tableDiv.setAttribute("style", "height:300px")
 
     let table = document.createElement("table");
     table.setAttribute("class", "table");
@@ -1266,7 +1266,7 @@ function placeOrderComponent() {
   );
   orderPlaceDiv.setAttribute(
     "style",
-    "height: fit-content ; margin-top : 80px "
+    "height: 400px ; margin-top : 50px "
   );
 
   let img = document.createElement("img");
