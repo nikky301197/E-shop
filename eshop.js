@@ -1022,7 +1022,7 @@ function viewCartComponent() {
   else {
     let tableDiv = document.createElement("div");
     tableDiv.setAttribute("class", "col-md-7 mt-3");
-    tableDiv.setAttribute("style", "height:300px")
+    tableDiv.setAttribute("style", "height:fit-content")
 
     let table = document.createElement("table");
     table.setAttribute("class", "table");
@@ -1266,7 +1266,7 @@ function placeOrderComponent() {
   );
   orderPlaceDiv.setAttribute(
     "style",
-    "height: 400px ; margin-top : 80px "
+    "height: fit-content ; margin-top : 80px "
   );
 
   let img = document.createElement("img");
@@ -1296,7 +1296,7 @@ function createFooter() {
 
   let rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "container-fluid");
-  rowDiv.setAttribute("style", "background-color: #49447E ; height : 40px");
+  rowDiv.setAttribute("style", "background-color: #49447E ; height : 40px ; margin-top:100px");
   
   footer.appendChild(rowDiv);
   main.appendChild(footer);
