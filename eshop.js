@@ -588,7 +588,7 @@ function createHeader() {
   var headerContainer = document.createElement("div");
   headerContainer.setAttribute("class", " headerContainer container-fluid  ");
   var headerRow = document.createElement("div");
-  headerRow.setAttribute("style", "height : 70px ; background-color : #796FE3");
+  headerRow.setAttribute("style", "height : 70px ; background-color : #49447E");
   headerRow.setAttribute("class", "row ");
   
   //  header logo starts from here
@@ -735,7 +735,7 @@ function createCart(data) {
     viewMoreElement.setAttribute("href", "#");
     viewMoreElement.setAttribute("style", "display:block;width:100%;");
     viewMoreElement.innerText = "View Description";
-    viewMoreElement.addEventListener("click", function () {
+    viewMoreElement.addEventListener("click", function () {  
       viewProductDescriptionComponent(product);
     });
     cart.appendChild(viewMoreElement);
