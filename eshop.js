@@ -1000,7 +1000,7 @@ function viewCartComponent() {
   );
   emptyCart.setAttribute(
     "style",
-    "height: fit-content ; margin-top :40px "
+    "height: fit-content ; margin-top :80px "
   );
 
   let img = document.createElement("img");
@@ -1266,7 +1266,7 @@ function placeOrderComponent() {
   );
   orderPlaceDiv.setAttribute(
     "style",
-    "height: fit-content ; margin-top : 50px "
+    "height: fit-content ; margin-top : 80px "
   );
 
   let img = document.createElement("img");
