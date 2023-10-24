@@ -588,18 +588,22 @@ function createHeader() {
   var headerContainer = document.createElement("div");
   headerContainer.setAttribute("class", " headerContainer container-fluid  ");
   var headerRow = document.createElement("div");
-  headerRow.setAttribute("style", "height : 70px");
-  headerRow.setAttribute("class", "bg-dark row ");
+  headerRow.setAttribute("style", "height : 70px ; background-color : #2A4A97");
+  headerRow.setAttribute("class", "row ");
+  
   //  header logo starts from here
   var headerLogo = document.createElement("div");
-  headerLogo.setAttribute("class", "col-md-3 col-3 d-flex justify-content-center align-items-center");
-  headerLogo.setAttribute("id" ,"headerLogo");
+  headerLogo.setAttribute(
+    "class",
+    "col-md-3 col-3 d-flex justify-content-center align-items-center"
+  );
+  headerLogo.setAttribute("id", "headerLogo");
   headerRow.appendChild(headerLogo);
 
   var logoH1 = document.createElement("h1");
   logoH1.innerHTML = "<span class='text-warning'>E</span>-shop";
   logoH1.setAttribute("class", "text-white");
-  logoH1.setAttribute("style", "cursor : pointer");
+  logoH1.setAttribute("style", "cursor : pointer ; ");
   logoH1.addEventListener("click", function () {
     document.querySelector("#main").innerHTML = "";
     createHeader();
@@ -982,17 +986,48 @@ function viewCartComponent() {
     return cart.user == userId;
   });
 
+ 
   let cartDiv = document.createElement("div");
-  cartDiv.setAttribute("class", "row mt-5");
+  cartDiv.setAttribute("class", "row    mt-5");
 
+  if (cartSpecificUser.productList.length == 0 )
+  {
+    
+  let emptyCart = document.createElement("div");
+  emptyCart.setAttribute(
+    "class",
+    "col-12  d-flex flex-column justify-content-center align-items-center "
+  );
+  emptyCart.setAttribute(
+    "style",
+    "height: fit-content ; margin-top :40px "
+  );
+
+  let img = document.createElement("img");
+  img.src =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmF_7DUVeAzTqy-PHVGj6kBLe0O2V974brwVkMErLFz5s4M4OHCd36pfVsXP6JllGfo8&usqp=CAU";
+  img.setAttribute("style", "height : 200px ; width : 200px");
+  emptyCart.appendChild(img);
+
+  let h5 = document.createElement("h5");
+  h5.innerText = "Your Shopping cart is empty ";
+  h5.setAttribute("style", "color : #C9123E ; margin-top : 20px");
+  emptyCart.appendChild(h5);
+  
+  cartDiv.appendChild(emptyCart);
+  
+
+  }
+  // if block ends here 
+  else{
   let tableDiv = document.createElement("div");
-  tableDiv.setAttribute("class", "col-md-5");
+  tableDiv.setAttribute("class", "col-md-7 mt-3");
 
   let table = document.createElement("table");
   table.setAttribute("class", "table");
   let tr = document.createElement("tr");
 
-  let tableHeading = ["SNo.", "Title", "Price", "Qty"];
+  let tableHeading = ["SNo.", "Title", "Price", "Qty", ""];
   for (let heading of tableHeading) {
     let th = document.createElement("th");
     th.innerText = heading;
@@ -1006,6 +1041,7 @@ function viewCartComponent() {
     let td = document.createElement("td");
     td.innerText = "" + i;
     tr.appendChild(td);
+
     i++;
     for (let key in product) {
       if (key == "title") {
@@ -1043,16 +1079,35 @@ function viewCartComponent() {
         tr.appendChild(td);
       }
     }
+
+    let td1 = document.createElement("td");
+   
+    td1.innerHTML = "<i class='fa fa-remove removeItemBtn bg-danger text-white p-1'></i>";
+    td1.addEventListener("click" , function()
+    {
+       let result = confirm("Do you want to remove item from cart");
+       if (result){
+         
+         let index = cartSpecificUser.productList.indexOf(product);
+         cartSpecificUser.productList.splice(index,1);
+         localStorage.setItem("cart-list", JSON.stringify(cartList));
+         viewCartComponent();
+       }
+
+    })
+    tr.appendChild(td1);
+
     table.appendChild(tr);
   }
 
   tableDiv.appendChild(table);
   cartDiv.appendChild(tableDiv);
 
+
   let orderDiv = document.createElement("div");
   orderDiv.setAttribute(
     "class",
-    "col-md-4 offset-md-2 d-flex flex-column justify-content-center align-items-center "
+    "col-md-4 offset-md-1  d-flex flex-column justify-content-center align-items-center mt-3"
   );
   orderDiv.setAttribute(
     "style",
@@ -1084,6 +1139,9 @@ function viewCartComponent() {
   orderDiv.appendChild(buttonCheckout);
 
   cartDiv.appendChild(orderDiv);
+
+}
+// else block ends here 
   cartContainer.appendChild(cartDiv);
 }
 
@@ -1199,33 +1257,41 @@ function placeOrderComponent() {
   cartContainer.innerHTML = "";
 
   let rowDiv = document.createElement("div");
-  rowDiv.setAttribute(
-    "class",
-    "row  d-flex justify-content-center"
-  );
+  rowDiv.setAttribute("class", "row  d-flex justify-content-center");
 
   let orderPlaceDiv = document.createElement("div");
-  orderPlaceDiv.setAttribute("class", "col-md-4  d-flex flex-column justify-content-center align-items-center ");
-  orderPlaceDiv.setAttribute("style", "height: fit-content ; margin-top : 80px ");
+  orderPlaceDiv.setAttribute(
+    "class",
+    "col-md-4  d-flex flex-column justify-content-center align-items-center "
+  );
+  orderPlaceDiv.setAttribute(
+    "style",
+    "height: fit-content ; margin-top : 50px "
+  );
 
   let img = document.createElement("img");
   img.src =
-    "https://pluspng.com/img-png/green-tick-png-hd-green-check-mark-car-pictures-512.png";
-  img.setAttribute("style", "height : 180px ; width : 180px");
+    "https://img.freepik.com/free-vector/digital-marketplace-application-remote-business-e-commerce-internet-store-mobile-market-customer-using-smartphone-cartoon-character-vector-isolated-concept-metaphor-illustration_335657-2762.jpg";
+  img.setAttribute("style", "height : 250px ; width : 250px");
   orderPlaceDiv.appendChild(img);
   let h3 = document.createElement("h3");
-  h3.innerText = "Congratulations!!";
-  h3.setAttribute("style", "color : #7BCC70 ; margin-top : 20px" )
+  h3.innerText = "Congratulations !!";
+  h3.setAttribute("style", "color : #7BCC70 ; margin-top : 0px");
   orderPlaceDiv.appendChild(h3);
 
   let p = document.createElement("p");
   p.innerText = "Order placed successfully";
-  p.setAttribute("class", "text-center")
-  p.setAttribute("style","font-size : 17px");
+  p.setAttribute("class", "text-center");
+  p.setAttribute("style", "font-size : 17px");
   orderPlaceDiv.appendChild(p);
 
- 
   rowDiv.appendChild(orderPlaceDiv);
 
   cartContainer.appendChild(rowDiv);
+}
+
+
+function removeProductFromCart()
+{
+ 
 }
