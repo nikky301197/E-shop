@@ -608,6 +608,7 @@ function createHeader() {
     document.querySelector("#main").innerHTML = "";
     createHeader();
     createCart(JSON.parse(localStorage.getItem("product_list")));
+    createFooter();
   });
 
   headerLogo.appendChild(logoH1);
@@ -880,6 +881,7 @@ function generateForm(buttontext) {
         main.innerHTML = "";
         createHeader();
         createCart(JSON.parse(localStorage.getItem("product_list")));
+        createFooter();
       } else {
         window.alert("Invalid username and password");
       }
@@ -1020,6 +1022,7 @@ function viewCartComponent() {
   else {
     let tableDiv = document.createElement("div");
     tableDiv.setAttribute("class", "col-md-7 mt-3");
+    tableDiv.setAttribute("style", "height:300px")
 
     let table = document.createElement("table");
     table.setAttribute("class", "table");
@@ -1139,6 +1142,8 @@ function viewCartComponent() {
   // else block ends here
   cartContainer.appendChild(cartDiv);
 }
+
+// viewcart component code ends here 
 
 function getBillAmount(cartSpecificUser) {
   let totalbillAmount = 0;
@@ -1283,4 +1288,13 @@ function placeOrderComponent() {
   rowDiv.appendChild(orderPlaceDiv);
 
   cartContainer.appendChild(rowDiv);
+}
+
+function createFooter() {
+  let main = document.querySelector("#main");
+
+  let rowDiv = document.createElement("div");
+  rowDiv.setAttribute("class", "container-fluid");
+  rowDiv.setAttribute("style", "background-color: #49447E ; height : 40px");
+  main.appendChild(rowDiv);
 }
