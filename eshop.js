@@ -1003,7 +1003,7 @@ function viewCartComponent() {
       "class",
       "col-12  d-flex flex-column justify-content-center align-items-center "
     );
-    emptyCart.setAttribute("style", "height: fit-content ; margin-top :80px ");
+    emptyCart.setAttribute("style", "height: 250px ; margin-top :80px ");
 
     let img = document.createElement("img");
     img.src =
@@ -1266,7 +1266,7 @@ function placeOrderComponent() {
   );
   orderPlaceDiv.setAttribute(
     "style",
-    "height: fit-content ; margin-top : 80px "
+    "height: 400px ; margin-top : 80px "
   );
 
   let img = document.createElement("img");
@@ -1292,9 +1292,12 @@ function placeOrderComponent() {
 
 function createFooter() {
   let main = document.querySelector("#main");
+  let footer = document.createElement("footer");
 
   let rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "container-fluid");
   rowDiv.setAttribute("style", "background-color: #49447E ; height : 40px");
-  main.appendChild(rowDiv);
+  
+  footer.appendChild(rowDiv);
+  main.appendChild(footer);
 }
