@@ -588,7 +588,7 @@ function createHeader() {
   var headerContainer = document.createElement("div");
   headerContainer.setAttribute("class", " headerContainer container-fluid  ");
   var headerRow = document.createElement("div");
-  headerRow.setAttribute("style", "height : 70px ; background-color : #2A4A97");
+  headerRow.setAttribute("style", "height : 70px ; background-color : #796FE3");
   headerRow.setAttribute("class", "row ");
   
   //  header logo starts from here
@@ -623,7 +623,7 @@ function createHeader() {
   var inputBar = document.createElement("input");
   inputBar.setAttribute("type", "text");
   inputBar.setAttribute("placeholder", "Search Product here");
-  inputBar.setAttribute("style", "height : 60% ; width : 60% ");
+  inputBar.setAttribute("style", "height : 60% ; width : 60% ; border : none ; border-radius : 4px ; font-size: 17px ; padding-left : 15px");
 
   headerSearchBar.appendChild(inputBar);
   headerRow.appendChild(headerSearchBar);
@@ -742,7 +742,7 @@ function createCart(data) {
 
     var addToCartElement = document.createElement("button");
     addToCartElement.setAttribute("class", "btn btn-warning mt-1");
-    addToCartElement.setAttribute("style", "width:90%;color:white;");
+    addToCartElement.setAttribute("style", "width:90%;color:white; font-weight:bold");
     addToCartElement.innerText = "Add To Cart";
     addToCartElement.addEventListener("click", function () {
       saveProductInCart(product);
