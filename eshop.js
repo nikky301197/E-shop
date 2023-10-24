@@ -1202,17 +1202,17 @@ function placeOrderComponent() {
   );
 
   let orderPlaceDiv = document.createElement("div");
-  orderPlaceDiv.setAttribute("class", "col-md-4  mt-5 mb-5 d-flex flex-column justify-content-center align-items-center ");
-  orderPlaceDiv.setAttribute("style", "height: fit-content");
+  orderPlaceDiv.setAttribute("class", "col-md-4  d-flex flex-column justify-content-center align-items-center ");
+  orderPlaceDiv.setAttribute("style", "height: fit-content ; margin-top : 80px ");
 
   let img = document.createElement("img");
   img.src =
     "https://pluspng.com/img-png/green-tick-png-hd-green-check-mark-car-pictures-512.png";
-  img.setAttribute("style", "height : 200px ; width : 200px");
+  img.setAttribute("style", "height : 180px ; width : 180px");
   orderPlaceDiv.appendChild(img);
   let h3 = document.createElement("h3");
   h3.innerText = "Congratulations!!";
-  h3.setAttribute("style", "color : #7BCC70" )
+  h3.setAttribute("style", "color : #7BCC70 ; margin-top : 20px" )
   orderPlaceDiv.appendChild(h3);
 
   let p = document.createElement("p");
