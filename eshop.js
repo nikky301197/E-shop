@@ -592,7 +592,8 @@ function createHeader() {
   headerRow.setAttribute("class", "bg-dark row ");
   //  header logo starts from here
   var headerLogo = document.createElement("div");
-  headerLogo.setAttribute("class", "col-md-3 col-12");
+  headerLogo.setAttribute("class", "col-md-3 col-3 d-flex justify-content-center align-items-center");
+  headerLogo.setAttribute("id" ,"headerLogo");
   headerRow.appendChild(headerLogo);
 
   var logoH1 = document.createElement("h1");
@@ -612,11 +613,12 @@ function createHeader() {
   var headerSearchBar = document.createElement("div");
   headerSearchBar.setAttribute(
     "class",
-    "col-md-6 col-12   d-flex justify-content-center align-items-center "
+    "col-md-6 col-5   d-flex justify-content-center align-items-center "
   );
+  headerSearchBar.setAttribute("id", "headerSearchBar");
   var inputBar = document.createElement("input");
   inputBar.setAttribute("type", "text");
-  inputBar.setAttribute("placeholder", "Search Product");
+  inputBar.setAttribute("placeholder", "Search Product here");
   inputBar.setAttribute("style", "height : 60% ; width : 60% ");
 
   headerSearchBar.appendChild(inputBar);
@@ -627,8 +629,9 @@ function createHeader() {
   var headerOption = document.createElement("div");
   headerOption.setAttribute(
     "class",
-    "col-md-3 col-12   d-flex justify-content-around align-items-center  "
+    "col-md-3 col-4   d-flex justify-content-around align-items-center  "
   );
+  headerOption.setAttribute("id", "headerOption");
   if (!sessionStorage.getItem("isLoggedIn")) {
     var signUp = document.createElement("span");
     signUp.innerText = "Sign Up";
