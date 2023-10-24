@@ -590,7 +590,7 @@ function createHeader() {
   var headerRow = document.createElement("div");
   headerRow.setAttribute("style", "height : 70px ; background-color : #49447E");
   headerRow.setAttribute("class", "row ");
-  
+
   //  header logo starts from here
   var headerLogo = document.createElement("div");
   headerLogo.setAttribute(
@@ -623,7 +623,10 @@ function createHeader() {
   var inputBar = document.createElement("input");
   inputBar.setAttribute("type", "text");
   inputBar.setAttribute("placeholder", "Search Product here");
-  inputBar.setAttribute("style", "height : 60% ; width : 60% ; border : none ; border-radius : 4px ; font-size: 17px ; padding-left : 15px");
+  inputBar.setAttribute(
+    "style",
+    "height : 60% ; width : 60% ; border : none ; border-radius : 4px ; font-size: 17px ; padding-left : 15px"
+  );
 
   headerSearchBar.appendChild(inputBar);
   headerRow.appendChild(headerSearchBar);
@@ -735,14 +738,17 @@ function createCart(data) {
     viewMoreElement.setAttribute("href", "#");
     viewMoreElement.setAttribute("style", "display:block;width:100%;");
     viewMoreElement.innerText = "View Description";
-    viewMoreElement.addEventListener("click", function () {  
+    viewMoreElement.addEventListener("click", function () {
       viewProductDescriptionComponent(product);
     });
     cart.appendChild(viewMoreElement);
 
     var addToCartElement = document.createElement("button");
     addToCartElement.setAttribute("class", "btn btn-warning mt-1");
-    addToCartElement.setAttribute("style", "width:90%;color:white; font-weight:bold");
+    addToCartElement.setAttribute(
+      "style",
+      "width:90%;color:white; font-weight:bold"
+    );
     addToCartElement.innerText = "Add To Cart";
     addToCartElement.addEventListener("click", function () {
       saveProductInCart(product);
@@ -986,162 +992,151 @@ function viewCartComponent() {
     return cart.user == userId;
   });
 
- 
   let cartDiv = document.createElement("div");
   cartDiv.setAttribute("class", "row    mt-5");
 
-  if (cartSpecificUser.productList.length == 0 )
-  {
-    
-  let emptyCart = document.createElement("div");
-  emptyCart.setAttribute(
-    "class",
-    "col-12  d-flex flex-column justify-content-center align-items-center "
-  );
-  emptyCart.setAttribute(
-    "style",
-    "height: fit-content ; margin-top :80px "
-  );
+  if (cartSpecificUser.productList.length == 0) {
+    let emptyCart = document.createElement("div");
+    emptyCart.setAttribute(
+      "class",
+      "col-12  d-flex flex-column justify-content-center align-items-center "
+    );
+    emptyCart.setAttribute("style", "height: fit-content ; margin-top :80px ");
 
-  let img = document.createElement("img");
-  img.src =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmF_7DUVeAzTqy-PHVGj6kBLe0O2V974brwVkMErLFz5s4M4OHCd36pfVsXP6JllGfo8&usqp=CAU";
-  img.setAttribute("style", "height : 200px ; width : 200px");
-  emptyCart.appendChild(img);
+    let img = document.createElement("img");
+    img.src =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmF_7DUVeAzTqy-PHVGj6kBLe0O2V974brwVkMErLFz5s4M4OHCd36pfVsXP6JllGfo8&usqp=CAU";
+    img.setAttribute("style", "height : 200px ; width : 200px");
+    emptyCart.appendChild(img);
 
-  let h5 = document.createElement("h5");
-  h5.innerText = "Your Shopping cart is empty ";
-  h5.setAttribute("style", "color : #C9123E ; margin-top : 20px");
-  emptyCart.appendChild(h5);
-  
-  cartDiv.appendChild(emptyCart);
-  
+    let h5 = document.createElement("h5");
+    h5.innerText = "Your Shopping cart is empty ";
+    h5.setAttribute("style", "color : #C9123E ; margin-top : 20px");
+    emptyCart.appendChild(h5);
 
+    cartDiv.appendChild(emptyCart);
   }
-  // if block ends here 
-  else{
-  let tableDiv = document.createElement("div");
-  tableDiv.setAttribute("class", "col-md-7 mt-3");
+  // if block ends here
+  else {
+    let tableDiv = document.createElement("div");
+    tableDiv.setAttribute("class", "col-md-7 mt-3");
 
-  let table = document.createElement("table");
-  table.setAttribute("class", "table");
-  let tr = document.createElement("tr");
-
-  let tableHeading = ["SNo.", "Title", "Price", "Qty", ""];
-  for (let heading of tableHeading) {
-    let th = document.createElement("th");
-    th.innerText = heading;
-    tr.appendChild(th);
-  }
-
-  table.appendChild(tr);
-  let i = 1;
-  for (let product of cartSpecificUser.productList) {
+    let table = document.createElement("table");
+    table.setAttribute("class", "table");
     let tr = document.createElement("tr");
-    let td = document.createElement("td");
-    td.innerText = "" + i;
-    tr.appendChild(td);
 
-    i++;
-    for (let key in product) {
-      if (key == "title") {
-        let td = document.createElement("td");
-        td.innerText = product[key];
-        tr.appendChild(td);
-      } else if (key == "price") {
-        let td = document.createElement("td");
-        td.innerText = "Rs. " + product[key];
-        tr.appendChild(td);
-      } else if (key == "qty") {
-        let td = document.createElement("td");
-        let qtyInput = document.createElement("input");
-        qtyInput.setAttribute("type", "number");
-        qtyInput.setAttribute("style", "width : 50px");
-        qtyInput.setAttribute("value", product[key]);
-        qtyInput.setAttribute("min", "1");
-        qtyInput.addEventListener("change", function () {
-          let index = cartSpecificUser.productList.findIndex((p1) => {
-            return p1.id == product.id;
-          });
-
-          let productItem = cartSpecificUser.productList[index];
-
-          cartSpecificUser.productList.splice(index, 1);
-
-          productItem.qty = qtyInput.value;
-          cartSpecificUser.productList.splice(index, 0, productItem);
-          localStorage.setItem("cart-list", JSON.stringify(cartList));
-          document.querySelector("#totalBillAmount").innerHTML =
-            getBillAmount(cartSpecificUser);
-        });
-
-        td.appendChild(qtyInput);
-        tr.appendChild(td);
-      }
+    let tableHeading = ["SNo.", "Title", "Price", "Qty", ""];
+    for (let heading of tableHeading) {
+      let th = document.createElement("th");
+      th.innerText = heading;
+      tr.appendChild(th);
     }
 
-    let td1 = document.createElement("td");
-   
-    td1.innerHTML = "<i class='fa fa-remove removeItemBtn bg-danger text-white p-1'></i>";
-    td1.addEventListener("click" , function()
-    {
-       let result = confirm("Do you want to remove item from cart");
-       if (result){
-         
-         let index = cartSpecificUser.productList.indexOf(product);
-         cartSpecificUser.productList.splice(index,1);
-         localStorage.setItem("cart-list", JSON.stringify(cartList));
-         viewCartComponent();
-       }
-
-    })
-    tr.appendChild(td1);
-
     table.appendChild(tr);
+    let i = 1;
+    for (let product of cartSpecificUser.productList) {
+      let tr = document.createElement("tr");
+      let td = document.createElement("td");
+      td.innerText = "" + i;
+      tr.appendChild(td);
+
+      i++;
+      for (let key in product) {
+        if (key == "title") {
+          let td = document.createElement("td");
+          td.innerText = product[key];
+          tr.appendChild(td);
+        } else if (key == "price") {
+          let td = document.createElement("td");
+          td.innerText = "Rs. " + product[key];
+          tr.appendChild(td);
+        } else if (key == "qty") {
+          let td = document.createElement("td");
+          let qtyInput = document.createElement("input");
+          qtyInput.setAttribute("type", "number");
+          qtyInput.setAttribute("style", "width : 50px");
+          qtyInput.setAttribute("value", product[key]);
+          qtyInput.setAttribute("min", "1");
+          qtyInput.addEventListener("change", function () {
+            let index = cartSpecificUser.productList.findIndex((p1) => {
+              return p1.id == product.id;
+            });
+
+            let productItem = cartSpecificUser.productList[index];
+
+            cartSpecificUser.productList.splice(index, 1);
+
+            productItem.qty = qtyInput.value;
+            cartSpecificUser.productList.splice(index, 0, productItem);
+            localStorage.setItem("cart-list", JSON.stringify(cartList));
+            document.querySelector("#totalBillAmount").innerHTML =
+              getBillAmount(cartSpecificUser);
+          });
+
+          td.appendChild(qtyInput);
+          tr.appendChild(td);
+        }
+      }
+
+      let td1 = document.createElement("td");
+
+      td1.innerHTML =
+        "<i class='fa fa-remove removeItemBtn bg-danger text-white p-1'></i>";
+      td1.addEventListener("click", function () {
+        let result = confirm("Do you want to remove item from cart");
+        if (result) {
+          let index = cartSpecificUser.productList.indexOf(product);
+          cartSpecificUser.productList.splice(index, 1);
+          localStorage.setItem("cart-list", JSON.stringify(cartList));
+          viewCartComponent();
+        }
+      });
+      tr.appendChild(td1);
+
+      table.appendChild(tr);
+    }
+
+    tableDiv.appendChild(table);
+    cartDiv.appendChild(tableDiv);
+
+    let orderDiv = document.createElement("div");
+    orderDiv.setAttribute(
+      "class",
+      "col-md-4 offset-md-1  d-flex flex-column justify-content-center align-items-center mt-3"
+    );
+    orderDiv.setAttribute(
+      "style",
+      "height:250px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"
+    );
+
+    let h3 = document.createElement("h3");
+    h3.innerText = "Order summery";
+
+    let totalItems = document.createElement("span");
+    totalItems.innerHTML =
+      "Total Items : " + cartSpecificUser.productList.length;
+
+    let billAmount = document.createElement("span");
+    billAmount.innerHTML =
+      "Total Bill : <label id='totalBillAmount' class='text-danger'>" +
+      getBillAmount(cartSpecificUser) +
+      "</label>";
+
+    let buttonCheckout = document.createElement("button");
+    buttonCheckout.setAttribute("class", "btn btn-warning");
+    buttonCheckout.innerText = "Checkout";
+    buttonCheckout.setAttribute("style", "width:90%; font-size:17px");
+    buttonCheckout.addEventListener("click", function () {
+      checkoutComponent();
+    });
+    orderDiv.appendChild(h3);
+    orderDiv.appendChild(totalItems);
+    orderDiv.appendChild(billAmount);
+    orderDiv.appendChild(buttonCheckout);
+
+    cartDiv.appendChild(orderDiv);
   }
-
-  tableDiv.appendChild(table);
-  cartDiv.appendChild(tableDiv);
-
-
-  let orderDiv = document.createElement("div");
-  orderDiv.setAttribute(
-    "class",
-    "col-md-4 offset-md-1  d-flex flex-column justify-content-center align-items-center mt-3"
-  );
-  orderDiv.setAttribute(
-    "style",
-    "height:250px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-  );
-
-  let h3 = document.createElement("h3");
-  h3.innerText = "Order summery";
-
-  let totalItems = document.createElement("span");
-  totalItems.innerHTML = "Total Items : " + cartSpecificUser.productList.length;
-
-  let billAmount = document.createElement("span");
-  billAmount.innerHTML =
-    "Total Bill : <label id='totalBillAmount' class='text-danger'>" +
-    getBillAmount(cartSpecificUser) +
-    "</label>";
-
-  let buttonCheckout = document.createElement("button");
-  buttonCheckout.setAttribute("class", "btn btn-warning");
-  buttonCheckout.innerText = "Checkout";
-  buttonCheckout.setAttribute("style", "width:90%; font-size:17px");
-  buttonCheckout.addEventListener("click", function () {
-    checkoutComponent();
-  });
-  orderDiv.appendChild(h3);
-  orderDiv.appendChild(totalItems);
-  orderDiv.appendChild(billAmount);
-  orderDiv.appendChild(buttonCheckout);
-
-  cartDiv.appendChild(orderDiv);
-
-}
-// else block ends here 
+  // else block ends here
   cartContainer.appendChild(cartDiv);
 }
 
@@ -1288,10 +1283,4 @@ function placeOrderComponent() {
   rowDiv.appendChild(orderPlaceDiv);
 
   cartContainer.appendChild(rowDiv);
-}
-
-
-function removeProductFromCart()
-{
- 
 }
