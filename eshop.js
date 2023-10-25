@@ -608,7 +608,7 @@ function createHeader() {
     document.querySelector("#main").innerHTML = "";
     createHeader();
     createCart(JSON.parse(localStorage.getItem("product_list")));
-    createFooter();
+    
   });
 
   headerLogo.appendChild(logoH1);
@@ -770,7 +770,7 @@ function viewProductDescriptionComponent(product) {
   rowDiv.setAttribute("class", "row  ");
 
   let colDiv1 = document.createElement("div");
-  colDiv1.setAttribute("class", "col-md-6   ");
+  colDiv1.setAttribute("class", "col-md-6 mt-1  ");
   let mainImgElement = document.createElement("img");
   mainImgElement.src = product.thumbnail;
   mainImgElement.setAttribute("style", "height:400px; width:100%;  ");
@@ -881,7 +881,7 @@ function generateForm(buttontext) {
         main.innerHTML = "";
         createHeader();
         createCart(JSON.parse(localStorage.getItem("product_list")));
-        createFooter();
+        
       } else {
         window.alert("Invalid username and password");
       }
@@ -1003,7 +1003,7 @@ function viewCartComponent() {
       "class",
       "col-12   d-flex flex-column justify-content-center align-items-center "
     );
-    emptyCart.setAttribute("style", "height: 300px ; margin-top :80px ");
+    emptyCart.setAttribute("style", "height: fit-content ; margin-top :80px ");
 
     let img = document.createElement("img");
     img.src =
@@ -1022,7 +1022,7 @@ function viewCartComponent() {
   else {
     let tableDiv = document.createElement("div");
     tableDiv.setAttribute("class", "col-md-7 mt-3");
-    tableDiv.setAttribute("style", "height:300px")
+    tableDiv.setAttribute("style", "height:fit-content")
 
     let table = document.createElement("table");
     table.setAttribute("class", "table");
@@ -1105,7 +1105,7 @@ function viewCartComponent() {
     let orderDiv = document.createElement("div");
     orderDiv.setAttribute(
       "class",
-      "col-md-4 offset-md-1  d-flex flex-column justify-content-center align-items-center mt-3"
+      "col-md-4 offset-md-1 col-12 d-flex flex-column justify-content-center align-items-center mt-3"
     );
     orderDiv.setAttribute(
       "style",
@@ -1290,14 +1290,3 @@ function placeOrderComponent() {
   cartContainer.appendChild(rowDiv);
 }
 
-function createFooter() {
-  let main = document.querySelector("#main");
-  let footer = document.createElement("footer");
-
-  let rowDiv = document.createElement("div");
-  rowDiv.setAttribute("class", "container-fluid");
-  rowDiv.setAttribute("style", "background-color: #49447E ; height : 40px ; margin-top:100px");
-  
-  footer.appendChild(rowDiv);
-  main.appendChild(footer);
-}
