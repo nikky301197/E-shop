@@ -1,8 +1,12 @@
+// set data of product list in local storage  
 function setData(data) {
   data = JSON.stringify(data);
   localStorage.setItem("product_list", data);
 }
+// set data code ends here
+// -----------------------------------------------------------------------
 
+// get list of products  
 function getData() {
   return [
     {
@@ -582,7 +586,10 @@ function getData() {
     },
   ];
 }
+// getdata code ends here 
+// ---------------------------------------------------------------------------------
 
+// create header function call whenever application loads 
 function createHeader() {
   var main = document.querySelector("#main");
   var headerContainer = document.createElement("div");
@@ -627,7 +634,10 @@ function createHeader() {
     "style",
     "height : 60% ; width : 60% ; border : none ; border-radius : 4px ; font-size: 17px ; padding-left : 15px"
   );
-
+headerSearchBar.addEventListener("keyup",function()
+{
+     searchProduct(inputBar.value);
+});
   headerSearchBar.appendChild(inputBar);
   headerRow.appendChild(headerSearchBar);
   // header search bar code ends here
@@ -701,12 +711,18 @@ function createHeader() {
   headerContainer.appendChild(headerRow);
   main.appendChild(headerContainer);
 }
+// create header code ends here 
+// ----------------------------------------------------------------------------------
 
+// create cart will generat main page with all product 
+// this funtion call whenever application loads  
 function createCart(data) {
+    
   var mainDiv = document.querySelector("#main");
   var divContainer = document.createElement("div");
   divContainer.setAttribute("class", "container   mb-5   ");
   divContainer.setAttribute("id", "cart-container");
+  
   var rowDiv = document.createElement("div");
   rowDiv.setAttribute("class", "row   ");
 
@@ -761,7 +777,11 @@ function createCart(data) {
   divContainer.appendChild(rowDiv);
   mainDiv.appendChild(divContainer);
 }
-// create cart code ends here
+// create cart code ends here 
+// ---------------------------------------------------------------------------------
+
+//function call on view description link 
+// display a new page containing details of product detials  
 function viewProductDescriptionComponent(product) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -830,7 +850,11 @@ function viewProductDescriptionComponent(product) {
 
   cartContainer.appendChild(rowDiv);
 }
-//  view product description componet code ends here
+// view product description code ends here 
+// ---------------------------------------------------------------------------------
+
+// funtion call on sign up and sign in 
+// generate form of sign up  and sign in  
 function generateForm(buttontext) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -928,7 +952,12 @@ function generateForm(buttontext) {
   rowDiv.appendChild(colDiv);
   cartContainer.appendChild(rowDiv);
 }
-//  generate form code ends here
+// generate form code ends here 
+// ----------------------------------------------------------------------------------
+
+//  function call on sign up form 
+// check enter email id is present in db or not 
+//  if not present then save user in db else throw error - user is already exist
 function saveUser(email, password) {
   var userlist = localStorage.getItem("user-list");
   userlist = JSON.parse(userlist);
@@ -945,7 +974,11 @@ function saveUser(email, password) {
     window.alert("Sign Up success");
   }
 }
-//  save user code ends here
+// save user code ends here 
+// --------------------------------------------------------------------------------------
+
+// funtion will check entered credentials on sign in page 
+// present in database or not 
 function signInUser(email, password) {
   let userList = localStorage.getItem("user-list");
   userList = JSON.parse(userList);
@@ -958,7 +991,10 @@ function signInUser(email, password) {
   }
   return false;
 }
-//  sign in user code ends here
+// sign in user code ends here 
+// -----------------------------------------------------------------------------------
+
+//click on add to cart button will save product in logged in user cart list 
 function saveProductInCart(product) {
   var userId = isLoggedIn();
 
@@ -1014,11 +1050,16 @@ function saveProductInCart(product) {
   }
 }
 //  save product in cart code ends here
+// ------------------------------------------------------------------------------------
+
+// funtion returns currently logged in user id 
 function isLoggedIn() {
   return sessionStorage.getItem("isLoggedIn");
 }
-// is logged in code ends here
+// is Logged in code ends here 
+// --------------------------------------------------------------------------------------
 
+// funtion calls on click view cart  button 
 function viewCartComponent() {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -1179,9 +1220,10 @@ function viewCartComponent() {
   // else block ends here
   cartContainer.appendChild(cartDiv);
 }
+// view cart component code ends here 
+// -------------------------------------------------------------------------------------
 
-// viewcart component code ends here
-
+// getbillamount method calls on view cart component or quantity increase or decrease 
 function getBillAmount(cartSpecificUser) {
   let totalbillAmount = 0;
   for (var product of cartSpecificUser.productList) {
@@ -1189,6 +1231,8 @@ function getBillAmount(cartSpecificUser) {
   }
   return totalbillAmount;
 }
+// get bill amount code ends here 
+// -------------------------------------------------------------------------------------
 
 // on clicking button of checkout this method will be called
 function checkoutComponent() {
@@ -1309,9 +1353,10 @@ function checkoutComponent() {
   rowDiv.appendChild(checkoutDiv);
   cartContainer.appendChild(rowDiv);
 }
+// checkout component code ends here 
+// -------------------------------------------------------------------------------------
 
 // execute when click on place order button
-
 function placeOrderComponent() {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -1346,7 +1391,10 @@ function placeOrderComponent() {
 
   cartContainer.appendChild(rowDiv);
 }
+// place order component code ends here 
+// ------------------------------------------------------------------------------------
 
+// validation forms  code 
 function validateName() {
   let status = true;
   let nameIn = document.querySelector("#nameInput");
@@ -1443,3 +1491,19 @@ function validatePassword() {
 
   return true;
 }
+// validate form code ends here 
+// -------------------------------------------------------------------------------------
+
+
+// calls when user search product 
+function searchProduct(keyword){
+
+  let productlist = JSON.parse( localStorage.getItem("product_list"));
+  let searchData =  productlist.filter( product => product.title.toLowerCase().includes(keyword.toLowerCase()) );
+   let cart =  document.getElementById("cart-container");
+   cart.remove();
+   createCart(searchData);
+
+}
+
+// search product code ends here 

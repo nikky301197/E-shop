@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+       <div class="row">
+             <div class="box" id = "box1" style="margin-bottom: 100px; height: 100px; width: 100px; background-color: yellowgreen;" >dskdskhks</div>
+
+             <button id="remove" onclick="move()">remove</button>
+       </div>
+    </div>
+
+    <script>
+       function move() {
+         let b = document.getElementById("box1");
+          b.setAttribute("style", "height :300px ;color: red ; background-color : black ")
+        //   b.remove()
+       }
+
+    </script>
+</body>
+</html>
