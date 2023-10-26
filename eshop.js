@@ -1079,14 +1079,16 @@ function viewCartComponent() {
     let emptyCart = document.createElement("div");
     emptyCart.setAttribute(
       "class",
-      "col-12   d-flex flex-column justify-content-center align-items-center "
+      "col-12    d-flex flex-column justify-content-center align-items-center "
     );
-    emptyCart.setAttribute("style", "height: fit-content ; margin-top :80px ");
+    emptyCart.setAttribute("style", "height: 400px;  ");
 
     let img = document.createElement("img");
     img.src =
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmF_7DUVeAzTqy-PHVGj6kBLe0O2V974brwVkMErLFz5s4M4OHCd36pfVsXP6JllGfo8&usqp=CAU";
-    img.setAttribute("style", "height : 200px ; width : 200px");
+   
+     
+    img.setAttribute("style", "height : 200px ; width : 190px");
     emptyCart.appendChild(img);
 
     let h5 = document.createElement("h5");
