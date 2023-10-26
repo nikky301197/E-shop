@@ -608,7 +608,6 @@ function createHeader() {
     document.querySelector("#main").innerHTML = "";
     createHeader();
     createCart(JSON.parse(localStorage.getItem("product_list")));
-    
   });
 
   headerLogo.appendChild(logoH1);
@@ -762,7 +761,7 @@ function createCart(data) {
   divContainer.appendChild(rowDiv);
   mainDiv.appendChild(divContainer);
 }
-
+// create cart code ends here
 function viewProductDescriptionComponent(product) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -831,7 +830,7 @@ function viewProductDescriptionComponent(product) {
 
   cartContainer.appendChild(rowDiv);
 }
-
+//  view product description componet code ends here
 function generateForm(buttontext) {
   var cartContainer = document.querySelector("#cart-container");
   cartContainer.innerHTML = "";
@@ -851,18 +850,40 @@ function generateForm(buttontext) {
   colDiv.appendChild(heading);
 
   var emailInput = document.createElement("input");
-  emailInput.setAttribute("class", "form-control mt-5");
+  emailInput.setAttribute("class", "emailInput form-control mt-5");
   emailInput.setAttribute("type", "text");
   emailInput.setAttribute("placeholder", "Enter email id ");
   emailInput.setAttribute("id", "email");
   colDiv.appendChild(emailInput);
 
+  let emailError = document.createElement("small");
+  emailError.setAttribute("class", "emailError");
+  emailError.setAttribute("style", "color : red");
+  emailError.innerText = "";
+  colDiv.appendChild(emailError);
+
+  emailInput.addEventListener("keyup", function()
+  {
+    validateEmail();
+  })
+
   var passwordInput = document.createElement("input");
-  passwordInput.setAttribute("class", "form-control mt-5");
+  passwordInput.setAttribute("class", "passwordInput form-control mt-5");
   passwordInput.setAttribute("type", "password");
   passwordInput.setAttribute("placeholder", "Enter password");
   passwordInput.setAttribute("id", "password");
   colDiv.appendChild(passwordInput);
+
+  let passwordError = document.createElement("small");
+  passwordError.setAttribute("class", "passwordError ");
+  passwordError.setAttribute("style", "color : red");
+  passwordError.innerText = "";
+  colDiv.appendChild(passwordError);
+
+  passwordInput.addEventListener("keyup", function()
+  {
+    validatePassword();
+  })
 
   var button = document.createElement("button");
   button.innerText = buttontext;
@@ -872,19 +893,34 @@ function generateForm(buttontext) {
     var password = document.querySelector("#password").value;
 
     if (buttontext == "Sign Up") {
-      saveUser(email, password);
-    } else if (buttontext == "Sign In") {
-      let status = signInUser(email, password);
-
-      if (status) {
-        var main = document.querySelector("#main");
-        main.innerHTML = "";
-        createHeader();
-        createCart(JSON.parse(localStorage.getItem("product_list")));
-        
+      if (validateEmail() && validatePassword()) {
+        saveUser(email, password);
       } else {
-        window.alert("Invalid username and password");
+        validateEmail();
+        validatePassword();
       }
+    } else if (buttontext == "Sign In") {
+      
+      if (validateEmail() && validatePassword())
+      {
+        let status = signInUser(email, password);
+        if (status) {
+          var main = document.querySelector("#main");
+          main.innerHTML = "";
+          createHeader();
+          createCart(JSON.parse(localStorage.getItem("product_list")));
+        } 
+        else{
+          alert("invalide username and password");
+        }
+      }
+      else{
+        validateEmail();
+        validatePassword();
+      }
+    
+
+  
     }
   });
   colDiv.appendChild(button);
@@ -892,7 +928,7 @@ function generateForm(buttontext) {
   rowDiv.appendChild(colDiv);
   cartContainer.appendChild(rowDiv);
 }
-
+//  generate form code ends here
 function saveUser(email, password) {
   var userlist = localStorage.getItem("user-list");
   userlist = JSON.parse(userlist);
@@ -909,7 +945,7 @@ function saveUser(email, password) {
     window.alert("Sign Up success");
   }
 }
-
+//  save user code ends here
 function signInUser(email, password) {
   let userList = localStorage.getItem("user-list");
   userList = JSON.parse(userList);
@@ -922,7 +958,7 @@ function signInUser(email, password) {
   }
   return false;
 }
-
+//  sign in user code ends here
 function saveProductInCart(product) {
   var userId = isLoggedIn();
 
@@ -977,10 +1013,11 @@ function saveProductInCart(product) {
     generateForm("Sign In");
   }
 }
-
+//  save product in cart code ends here
 function isLoggedIn() {
   return sessionStorage.getItem("isLoggedIn");
 }
+// is logged in code ends here
 
 function viewCartComponent() {
   var cartContainer = document.querySelector("#cart-container");
@@ -993,11 +1030,11 @@ function viewCartComponent() {
   cartSpecificUser = cartList.find((cart) => {
     return cart.user == userId;
   });
-
+  console.log(cartSpecificUser);
   let cartDiv = document.createElement("div");
   cartDiv.setAttribute("class", "row    mt-5");
 
-  if (cartSpecificUser.productList.length == 0) {
+  if ( !cartSpecificUser || cartSpecificUser.productList.length == 0  ) {
     let emptyCart = document.createElement("div");
     emptyCart.setAttribute(
       "class",
@@ -1022,7 +1059,7 @@ function viewCartComponent() {
   else {
     let tableDiv = document.createElement("div");
     tableDiv.setAttribute("class", "col-md-7 mt-3");
-    tableDiv.setAttribute("style", "height:fit-content")
+    tableDiv.setAttribute("style", "height:fit-content");
 
     let table = document.createElement("table");
     table.setAttribute("class", "table");
@@ -1143,7 +1180,7 @@ function viewCartComponent() {
   cartContainer.appendChild(cartDiv);
 }
 
-// viewcart component code ends here 
+// viewcart component code ends here
 
 function getBillAmount(cartSpecificUser) {
   let totalbillAmount = 0;
@@ -1165,7 +1202,7 @@ function checkoutComponent() {
   );
 
   let checkoutDiv = document.createElement("div");
-  checkoutDiv.setAttribute("class", "col-md-7  mt-3 mb-3  pt-2 pb-4");
+  checkoutDiv.setAttribute("class", " col-md-7  mt-2 mb-2  pt-2 pb-5");
   checkoutDiv.setAttribute(
     "style",
     "height : fit-content ;  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"
@@ -1177,74 +1214,97 @@ function checkoutComponent() {
   checkoutDiv.appendChild(heading);
 
   var nameInput = document.createElement("input");
-  nameInput.setAttribute("class", "form-control mt-5");
+  nameInput.setAttribute("class", "form-control mt-4");
   nameInput.setAttribute("type", "text");
   nameInput.setAttribute("placeholder", "Enter name");
-  nameInput.setAttribute("id", "name");
+  nameInput.setAttribute("id", "nameInput");
   checkoutDiv.appendChild(nameInput);
 
+  let nameError = document.createElement("small");
+  nameError.setAttribute("class", " pl-1");
+  nameError.setAttribute("id", "nameError");
+  nameError.setAttribute("style", "color:red");
+  checkoutDiv.appendChild(nameError);
+
+  nameInput.addEventListener("keyup", function () {
+    validateName();
+  });
+
   var emailInput = document.createElement("input");
-  emailInput.setAttribute("class", "form-control mt-5");
+  emailInput.setAttribute("class", "emailInput form-control mt-4");
   emailInput.setAttribute("type", "email");
   emailInput.setAttribute("placeholder", "Enter email id");
-  emailInput.setAttribute("id", "email");
+  emailInput.setAttribute("id", "emailIn");
   checkoutDiv.appendChild(emailInput);
 
+  let emailError = document.createElement("small");
+  emailError.setAttribute("class", "emailError pl-1");
+  emailError.setAttribute("id", "emailEr");
+  emailError.setAttribute("style", "color:red");
+  emailError.innerText = "";
+  checkoutDiv.appendChild(emailError);
+
+  emailInput.addEventListener("keyup", function () {
+    validateEmail();
+  });
+
   var numberInput = document.createElement("input");
-  numberInput.setAttribute("class", "form-control mt-5");
+  numberInput.setAttribute("class", "form-control mt-4");
   numberInput.setAttribute("type", "text");
   numberInput.setAttribute("placeholder", "Enter phone number");
-  numberInput.setAttribute("id", "phoneNo");
-  // numberInput.addEventListener( "onkeydown" , function(){
-  //   alert("sds");
-  //   let  status = true ;
-  //   let mobile =  document.querySelector("#phoneNo").value ;
-  //   let mobileError = document.querySelector("#phoneError");
-  //   if (mobile.length == 0 )
-  //   {
-  //     mobileError.innerText = "Please enter mobile number ";
-  //     mobileError.setAttribute("style", "color:red");
-  //     status = false ;
-  //   }
-  //   else if (isNaN(mobile)){
-  //     mobileError.innerText = "Only digit are allowed";
-  //      mobileError.setAttribute("style", "color:red");
-  //      status = false ;
-  //   }
-  //   else if (mobile.length != 10 )
-  //   {
-  //      mobileError.innerText = "Please enter 10 digit number";
-  //      mobileError.setAttribute("style", "color:red");
-  //      status = false ;
-  //   }
-  //   else{
-  //     mobileError.innerText = "";
-  //   }
-
-  // });
-
-  // let phoneError = document.createElement("span");
-  // phoneError.setAttribute("id", "phoneError");
-  // phoneError.innerText="";
-  // checkoutDiv.appendChild(phoneError);
-
+  numberInput.setAttribute("id", "numberInput");
   checkoutDiv.appendChild(numberInput);
 
+  let numberError = document.createElement("small");
+  numberError.innerText = "";
+  numberError.setAttribute("class", "pl-1");
+  numberError.setAttribute("id", "numberError");
+  numberError.setAttribute("style", "color:red");
+  checkoutDiv.appendChild(numberError);
+
+  numberInput.addEventListener("keyup", function () {
+    validateNumber();
+  });
+
   var addressInput = document.createElement("input");
-  addressInput.setAttribute("class", "form-control mt-5 ");
+  addressInput.setAttribute("class", "form-control mt-4");
   addressInput.setAttribute("type", "text");
   addressInput.setAttribute("placeholder", "Enter address");
-  addressInput.setAttribute("id", "address");
+  addressInput.setAttribute("id", "addressInput");
   checkoutDiv.appendChild(addressInput);
+
+  let addressError = document.createElement("small");
+  addressError.setAttribute("class", " pl-1");
+  addressError.setAttribute("id", "addressError");
+  addressError.setAttribute("style", "color:red");
+  checkoutDiv.appendChild(addressError);
+
+  addressInput.addEventListener("keyup", function () {
+    validateAddress();
+  });
 
   var button = document.createElement("button");
   button.innerText = "Place Order";
-  button.setAttribute("class", "btn btn-success  text-white mt-5 w-100");
+  button.setAttribute("class", "btn btn-success  text-white mt-2 w-100");
   button.setAttribute("style", "font-size :17px");
-  button.addEventListener("click", function () {
-    placeOrderComponent();
-  });
+
   checkoutDiv.appendChild(button);
+
+  button.addEventListener("click", function () {
+    if (
+      validateName() &&
+      validateNumber() &&
+      validateAddress() &&
+      validateEmail()
+    ) {
+      placeOrderComponent();
+    } else {
+      validateName();
+      validateNumber();
+      validateAddress();
+      validateEmail();
+    }
+  });
 
   rowDiv.appendChild(checkoutDiv);
   cartContainer.appendChild(rowDiv);
@@ -1264,10 +1324,7 @@ function placeOrderComponent() {
     "class",
     "col-md-4  d-flex flex-column justify-content-center align-items-center "
   );
-  orderPlaceDiv.setAttribute(
-    "style",
-    "height: 400px ; margin-top : 50px "
-  );
+  orderPlaceDiv.setAttribute("style", "height: 400px ; margin-top : 50px ");
 
   let img = document.createElement("img");
   img.src =
@@ -1290,3 +1347,99 @@ function placeOrderComponent() {
   cartContainer.appendChild(rowDiv);
 }
 
+function validateName() {
+  let status = true;
+  let nameIn = document.querySelector("#nameInput");
+
+  let value = nameIn.value;
+  let nameErr = document.querySelector("#nameError");
+
+  if (value.length == 0) {
+    nameErr.innerText = "please enter a name ";
+    status = false;
+  } else {
+    nameErr.innerText = "";
+    status = true;
+  }
+  return status;
+}
+
+function validateEmail() {
+  let emailIn = document.querySelector(".emailInput");
+  let emailErr = document.querySelector(".emailError");
+  let status = true;
+  let value = emailIn.value;
+
+  if (value.length == 0) {
+    emailErr.innerText = "please enter  email id ";
+    status = false;
+  }
+  if (!value.includes("@gmail.com")) {
+    emailErr.innerText = "please enter valid email id ";
+    status = false;
+  } else {
+    emailErr.innerText = "";
+    status = true;
+  }
+  return status;
+}
+
+function validateNumber() {
+  let status = true;
+  let numberIn = document.querySelector("#numberInput");
+  let numberErr = document.querySelector("#numberError");
+
+  let mobile = numberIn.value;
+
+  if (mobile.length == 0) {
+    numberErr.innerText = "Please enter mobile number ";
+
+    status = false;
+  } else if (isNaN(mobile)) {
+    numberErr.innerText = "Only digit are allowed";
+    status = false;
+  } else if (mobile.length != 10) {
+    numberErr.innerText = "Please enter 10 digit number";
+
+    status = false;
+  } else {
+    numberErr.innerText = "";
+    status = true;
+  }
+
+  return status;
+}
+
+function validateAddress() {
+  let addressIn = document.querySelector("#addressInput");
+  let addressErr = document.querySelector("#addressError");
+  let value = addressIn.value;
+  let status = true;
+
+  if (value.length == 0) {
+    addressErr.innerText = "Please enter address";
+    status = false;
+  } else {
+    addressErr.innerText = "";
+    status = true;
+  }
+  return status;
+}
+
+function validatePassword() {
+  let passwordIn = document.querySelector(".passwordInput").value;
+  let passwordErr = document.querySelector(".passwordError");
+  let status = true;
+  if (passwordIn.length == 0) {
+    passwordErr.innerText = "Please enter password";
+    status = false;
+  } else if (passwordIn.length < 6 || passwordIn.length > 15 ) {
+    passwordErr.innerText = "password can be 6 to 15 characters long";
+    status = false;
+  } else {
+    passwordErr.innerText = "";
+    status = true;
+  }
+
+  return true;
+}
